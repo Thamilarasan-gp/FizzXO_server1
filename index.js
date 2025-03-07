@@ -4,6 +4,8 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 const PORT = 9000;
+const heroRoutes = require("./Routes/HeroRoutes");
+const achievementRoutes = require("./Routes/Achievements");
 
 // Middleware
 app.use(cors({ origin: "*" }));
@@ -20,6 +22,8 @@ db.once("open", () => console.log("Connected to MongoDB"));
 // Routes
 const eventRoutes = require("./Routes/Event");
 app.use("/", eventRoutes);
+app.use("/heros", heroRoutes);
+app.use("/achievements", achievementRoutes);
 
 
 // Start Server
