@@ -9,6 +9,7 @@ const achievementRoutes = require("./Routes/Achievements");
 const  Signup_r = require("./Routes/Signup_r");
 const Login_r = require("./Routes/Login_r");
 const Forget_r = require("./Routes/Forget_r")
+const bookRoutes = require("./Routes/BookRoutes");
 
 // Middleware
 app.use(cors({ origin: "*" }));
@@ -27,6 +28,7 @@ const eventRoutes = require("./Routes/Event");
 app.use("/", eventRoutes);
 app.use("/heros", heroRoutes);
 app.use("/achievements", achievementRoutes);
+app.use("/books", bookRoutes);
 
 
 app.use("/sigin", Signup_r);
