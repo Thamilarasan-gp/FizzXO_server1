@@ -29,12 +29,11 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     await newImage.save();
     res.status(200).json({ message: "File uploaded", image: newImage });
   } catch (error) {
-    console.error("Upload error:", error);
     res.status(500).json({ message: "Upload failed", error });
   }
 });
 
-// Fetch all images (Gallery)
+// Fetch all images
 router.get("/gallery", async (req, res) => {
   try {
     const images = await Image.find();
@@ -44,15 +43,24 @@ router.get("/gallery", async (req, res) => {
   }
 });
 
+// Update image title & description
+router.put("/files/:id", async (req, res) => {
+  try {
+    const updatedImage = await Image.findByIdAndUpdate(
+      req.params.id,
+      { title: req.body.title, description: req.body.description },
+      { new: true }
+    );
+    res.json({ message: "Updated", image: updatedImage });
+  } catch (error) {
+    res.status(500).json({ message: "Update failed", error });
+  }
+});
+
 // Delete an image
 router.delete("/files/:id", async (req, res) => {
   try {
-    const image = await Image.findById(req.params.id);
-    if (!image) return res.status(404).json({ message: "Image not found" });
-
-    await cloudinary.uploader.destroy(image.public_id);
     await Image.findByIdAndDelete(req.params.id);
-
     res.json({ message: "Image deleted" });
   } catch (error) {
     res.status(500).json({ message: "Delete failed", error });

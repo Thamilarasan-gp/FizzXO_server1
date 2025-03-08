@@ -169,5 +169,41 @@ router.post("/events/:id/unlike", async (req, res) => {
     });
   }
 });
+// Express route to update an event
+router.put("/events/:id", upload.single("photo"), async (req, res) => {
+  try {
+      const eventId = req.params.id;
+      const { name, description, date, location, youtubeLink } = req.body;
 
+      let event = await Event.findById(eventId);
+      if (!event) {
+          return res.status(404).json({ message: "Event not found" });
+      }
+
+      let photoUrl = event.photoUrl; // Keep existing photo if not updated
+
+      // If a new photo is uploaded, upload it to Cloudinary
+      if (req.file) {
+          const b64 = Buffer.from(req.file.buffer).toString("base64");
+          const dataURI = `data:${req.file.mimetype};base64,${b64}`;
+          const uploadResult = await cloudinary.uploader.upload(dataURI, {
+              resource_type: "auto",
+              folder: "events",
+          });
+          photoUrl = uploadResult.secure_url;
+      }
+
+      // Update event in the database
+      event = await Event.findByIdAndUpdate(
+          eventId,
+          { name, description, date, location, youtubeLink, photoUrl },
+          { new: true }
+      );
+
+      res.status(200).json({ success: true, message: "Event updated successfully", event });
+  } catch (error) {
+      console.error("Update error:", error);
+      res.status(500).json({ message: "Error updating event", error });
+  }
+});
 module.exports = router;
