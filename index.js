@@ -4,36 +4,39 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 const PORT = 9000;
+
+// Import Routes
 const heroRoutes = require("./Routes/HeroRoutes");
 const achievementRoutes = require("./Routes/Achievements");
-const  Signup_r = require("./Routes/Signup_r");
-const Login_r = require("./Routes/Login_r");
-const Forget_r = require("./Routes/Forget_r")
+const signupRoutes = require("./Routes/Signup_r");
+const loginRoutes = require("./Routes/Login_r");
+const forgetRoutes = require("./Routes/Forget_r");
 const bookRoutes = require("./Routes/BookRoutes");
+const eventRoutes = require("./Routes/Event");
 
 // Middleware
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/eventsDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-const db = mongoose.connection;
-db.once("open", () => console.log("Connected to MongoDB"));
+const MONGO_URI = "mongodb+srv://thamilprakasam2005:appichithamil@cluster0.qqwny.mongodb.net/Practise?retryWrites=true&w=majority&appName=Cluster0";
+
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
-const eventRoutes = require("./Routes/Event");
 app.use("/", eventRoutes);
 app.use("/heros", heroRoutes);
 app.use("/achievements", achievementRoutes);
 app.use("/books", bookRoutes);
-
-
-app.use("/sigin", Signup_r);
-app.use("/login", Login_r);
-app.use("/forget", Forget_r);
+app.use("/signup", signupRoutes);
+app.use("/login", loginRoutes);
+app.use("/forget", forgetRoutes);
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
