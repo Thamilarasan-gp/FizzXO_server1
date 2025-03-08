@@ -19,7 +19,7 @@ app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 // MongoDB Connection
-const MONGO_URI = "mongodb+srv://thamilprakasam2005:appichithamil@cluster0.qqwny.mongodb.net/Practise?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
   .connect(MONGO_URI, {
