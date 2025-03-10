@@ -5,6 +5,9 @@ require("dotenv").config();
 const app = express();
 const PORT = 9000;
 
+
+const cloudinary = require("cloudinary").v2;
+
 // Import Routes
 const heroRoutes = require("./Routes/HeroRoutes");
 const achievementRoutes = require("./Routes/Achievements");
@@ -13,7 +16,10 @@ const loginRoutes = require("./Routes/Login_r");
 const forgetRoutes = require("./Routes/Forget_r");
 const bookRoutes = require("./Routes/BookRoutes");
 const eventRoutes = require("./Routes/Event");
+const P_Books = require("./Routes/pathippagam_books");
+const pathipagamEvents = require("./Routes/PathipagamEvents");
 
+//const PeventsRoutes = require("./Routes/pathippagam_events");
 // Middleware
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -30,13 +36,15 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Routes
-app.use("/", eventRoutes);
+app.use("/books", bookRoutes);
+app.use("/p_books", P_Books);
+app.use("/events", eventRoutes);
+//app.use("/p_events", PeventsRoutes);
 app.use("/heros", heroRoutes);
 app.use("/achievements", achievementRoutes);
-app.use("/books", bookRoutes);
-app.use("/signup", signupRoutes);
+app.use("/signup/sigin", signupRoutes);
 app.use("/login", loginRoutes);
 app.use("/forget", forgetRoutes);
-
+app.use("/pathipagamEvent", pathipagamEvents);
 // Start Server
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));

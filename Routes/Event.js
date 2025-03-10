@@ -89,6 +89,15 @@ router.get("/events", async (req, res) => {
   }
 });
 
+router.get("/ALL", async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.status(200).json(events);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching events", error });
+  }
+});
+
 router.delete("/events/:id", async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
