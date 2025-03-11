@@ -18,7 +18,7 @@ const bookRoutes = require("./Routes/BookRoutes");
 const eventRoutes = require("./Routes/Event");
 const P_Books = require("./Routes/pathippagam_books");
 const pathipagamEvents = require("./Routes/PathipagamEvents");
-
+const newsletterRoutes = require("./Routes/newsletters");
 //const PeventsRoutes = require("./Routes/pathippagam_events");
 // Middleware
 app.use(cors({ origin: "*" }));
@@ -46,5 +46,6 @@ app.use("/signup/sigin", signupRoutes);
 app.use("/login", loginRoutes);
 app.use("/forget", forgetRoutes);
 app.use("/pathipagamEvent", pathipagamEvents);
+app.use("/newsletters", newsletterRoutes);
 // Start Server
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
